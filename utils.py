@@ -3,5 +3,5 @@ def print_header(text):
     padding = 5
     border = "+" + "-" * padding + "-"*length + "-" * padding + "+"
     title = "\n|" + " " * padding + text + " " * padding + "|\n"
-    header = border + title + border
+    header = "\n" + border + title + border
     print(header)

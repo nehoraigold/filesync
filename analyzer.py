@@ -3,7 +3,8 @@ import utils
 
 class Analyzer():
     def __init__(self, configs):
-        print("Starting analysis...\n")
+        print("Starting analysis...")
+        self.configs = configs
         self.source_dict = dict()
         self.backup_dict = dict()
         self.duplicates_flag = False
@@ -25,8 +26,12 @@ class Analyzer():
         utils.print_header("ANALYSIS SUMMARY")
         print("There are {} files in your source destination, {} of which need backup."
             .format(len(self.source_dict.keys()), self.files_to_backup))
-        print("There are {} files in your backup destination, {} of which you don't have locally.\n"
+        if self.files_to_backup > 0 and not self.configs.backup_enabled:
+            print("Backup is disabled. The {} files will not be backed up.".format(self.files_to_backup))
+        print("There are {} files in your backup destination, {} of which you don't have locally."
             .format(len(self.backup_dict.keys()), self.files_to_backcopy))
+        if self.files_to_backcopy > 0 and not self.configs.backcopy_enabled:
+            print("Backcopy is disabled. The {} files will not be copied to your local directory.".format(self.files_to_backcopy))        
 
     def get_source_files(self):
         return self.source_dict

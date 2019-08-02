@@ -1,8 +1,8 @@
 {
+    "testMode": false,
+    "enableBackup": true,
+    "enableBackCopy": true,
     "backupPath": "D:\\Music",
     "sourcePath": "C:\\Users\\Ori\\Music\\iTunes\\iTunes Media\\Music",
-    "backCopyPath": "C:\\Users\\Ori\\Music\\iTunes\\iTunes Media\\Automatically Add to iTunes",
-    "testMode": true,
-    "enableBackCopy": true,
-    "enableBackup": true
+    "backCopyPath": "C:\\Users\\Ori\\Music\\iTunes\\iTunes Media\\Automatically Add to iTunes"
 }

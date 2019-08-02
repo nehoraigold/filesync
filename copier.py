@@ -20,5 +20,5 @@ class Copier():
                 print("done!")
         if count != self.total:
             print("There was an issue...")
-        print("Complete!\n")
+        print("Complete!")
         return count
