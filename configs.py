@@ -3,13 +3,14 @@ from os.path import isdir
 
 class Configs():
     def __init__(self, dictionary):
-        self.test_mode = dictionary.get("test", False)
+        self.test_mode = dictionary.get("testMode", False)
         self.backup_path = "C:\\Users\\Ori\\Desktop\\dst" if self.test_mode else dictionary.get("backupPath")
         self.source_path = "C:\\Users\\Ori\\Desktop\\src" if self.test_mode else dictionary.get("sourcePath")
         self.backcopy_path = "C:\\Users\\Ori\\Desktop\\src" if self.test_mode else dictionary.get("backCopyPath")
+        self.backup_enabled = dictionary.get("enableBackup", False)
         self.backcopy_enabled = dictionary.get("enableBackCopy", False)
         if self.validate_paths():
-            print("\nConfigurations loaded succssfully!{}".format("\nRunning in test mode.\n" if self.test_mode else "\n"))
+            print("Configurations loaded succssfully!{}".format("\nRunning in test mode.\n" if self.test_mode else "\n"))
         else:
             msg = "There was an error loading the configuration file.\n\nOne or more of the configured paths is invalid. Have you connected the external hard drive?"
             print("{}\n => Source: {}\n => Backup: {}{}".format(
