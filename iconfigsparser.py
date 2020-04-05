@@ -8,6 +8,7 @@ class IConfigsParser(metaclass=abc.ABCMeta):
                 hasattr(subclass, 'backup_path') and \
                 hasattr(subclass, 'backcopy_path') and \
                 hasattr(subclass, 'options') and \
+                hasattr(subclass, 'filetypes') and \
                 hasattr(subclass, 'is_enabled') and \
                 callable(subclass.is_enabled) and \
                 hasattr(subclass, 'validate') and \

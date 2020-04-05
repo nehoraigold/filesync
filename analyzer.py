@@ -1,12 +1,13 @@
 import typing
 import os
-from utils import OptionsFlag
+from utils import OptionsFlag, FileTypeFlag, FILETYPE_TO_SUFFIX
 import utils
 
 class Analyzer():
     def __init__(self, configs: "IConfigsParser"):
         print("Starting analysis...")
         self.configs = configs
+        self.suffixes = self.get_allowed_suffixes()
         self.source_dict: typing.Dict[str, str] = dict()
         self.backup_dict: typing.Dict[str, str] = dict()
         self.duplicates_flag = False
@@ -55,10 +56,12 @@ class Analyzer():
                 elif entry.is_dir() and self.configs.is_enabled(OptionsFlag.RECURSIVE_SEARCH):
                     self.populate_dictionary(entry.path, dictionary)
         
-    
+    def get_allowed_suffixes(self):
+        suffix_list = []
+        for filetype, suffixes in FILETYPE_TO_SUFFIX.items():
+            if self.configs.filetypes & filetype:
+                suffix_list += suffixes
+        return suffix_list
+
     def has_suffix(self, entryName):
-        MUSIC_SUFFIXES = [".m4a", ".mp3", ".aif", ".wav", ".aac", ".m4p", ".wma"]
-        IMAGE_SUFFIXES = [".jpg", ".jpeg", ".gif", ".png"]
-        VIDEO_SUFFIXES = [".mov", ".wav"]
-        SUFFIXES: typing.List[str] = MUSIC_SUFFIXES
-        return any([filetype in entryName for filetype in SUFFIXES])
+        return any([filetype in entryName for filetype in self.suffixes])

@@ -1,11 +1,12 @@
 import json
 from iconfigsparser import IConfigsParser
-from utils import OptionsFlag
+from utils import OptionsFlag, FileTypeFlag
 from os.path import isdir
 
 class JSONConfigsParser(IConfigsParser):
     def __init__(self, dictionary):
         self.options = self.get_options(dictionary)
+        self.filetypes = self.get_filetypes(dictionary)
         self.backup_path = "C:\\Users\\Ori\\Desktop\\dst" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get("backupPath")
         self.source_path = "C:\\Users\\Ori\\Desktop\\src" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get("sourcePath")
         self.backcopy_path = "C:\\Users\\Ori\\Desktop\\src" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get("backCopyPath")
@@ -27,6 +28,16 @@ class JSONConfigsParser(IConfigsParser):
         if dictionary.get("recursiveSearch", False):
             flags |= OptionsFlag.RECURSIVE_SEARCH
         return flags
+    
+    def get_filetypes(self, dictionary):
+        filetypes = FileTypeFlag.NONE
+        filetype_list = dictionary.get("filetypes", [])
+        for ft in filetype_list:
+            if ft == "all":
+                return FileTypeFlag.ALL_TYPE
+            filetypes |= FileTypeFlag.from_string(ft)
+        return filetypes
+
 
     def validate(self):
         try:

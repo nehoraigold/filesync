@@ -46,10 +46,10 @@ class OptionsFlag(Flag):
 
 
 class FileTypeFlag(Flag):
+    NONE = 0
     IMAGE_TYPE = auto()
     AUDIO_TYPE = auto()
     VIDEO_TYPE = auto()
-    VISUAL_TYPE = IMAGE_TYPE | VIDEO_TYPE
     ALL_TYPE = IMAGE_TYPE | AUDIO_TYPE | VIDEO_TYPE
 
     @staticmethod
@@ -63,4 +63,10 @@ class FileTypeFlag(Flag):
         for filetype, patterns in filetype_to_patterns_map.items():
             if get_regex(patterns).search(arg):
                 return filetype
-        return FileTypeFlag.ALL_TYPE
+        return FileTypeFlag.NONE
+
+FILETYPE_TO_SUFFIX = {
+    FileTypeFlag.IMAGE_TYPE: [".jpg", ".jpeg", ".gif", ".png"],
+    FileTypeFlag.VIDEO_TYPE: [".mov", ".wav"],
+    FileTypeFlag.AUDIO_TYPE: [".m4a", ".mp3", ".aif", ".wav", ".aac", ".m4p", ".wma"]
+}

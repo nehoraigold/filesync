@@ -6,25 +6,40 @@ from iconfigsparser import IConfigsParser
 class CLIConfigsParser(IConfigsParser):
     def __init__(self, args: typing.List[str]):
         self.args = args
-        self.options = self.get_options(self.args)
+        self.options = self.get_options()
+        self.filetypes = self.get_filetypes()
         self.source_path = self.args[-2]
         self.backup_path = self.args[-1]
-        self.backcopy_path = self.get_backcopy_path(self.options, self.args)
+        self.backcopy_path = self.get_backcopy_path()
 
-    @staticmethod
-    def get_options(arguments: typing.List[str]) -> typing.List[OptionsFlag]:
+    def get_options(self) -> OptionsFlag:
         flags = OptionsFlag.NONE
-        for option in arguments:
+        for option in self.args:
             flags |= OptionsFlag.from_string(option)
         return flags
     
-    @staticmethod
-    def get_backcopy_path(options: OptionsFlag, args: typing.List[str]):
-        if not options & OptionsFlag.BACKCOPY_ENABLED:
+    def get_filetypes(self) -> FileTypeFlag:
+        if not self.is_enabled(OptionsFlag.SPECIFIC_FILETYPE):
+            return FileTypeFlag.ALL_TYPE
+        filetypes = FileTypeFlag.NONE
+        flag_found = False
+        for arg in self.args:
+            if flag_found:
+                new_filetype = FileTypeFlag.from_string(arg)
+                if not new_filetype:
+                    break
+                filetypes |= new_filetype
+                continue
+            if OptionsFlag.from_string(arg) & OptionsFlag.SPECIFIC_FILETYPE:
+                flag_found = True
+        return filetypes
+        
+    def get_backcopy_path(self):
+        if not self.is_enabled(OptionsFlag.BACKCOPY_ENABLED):
             return None
-        for i, arg in enumerate(args):
+        for i, arg in enumerate(self.args):
             if OptionsFlag.from_string(arg) & OptionsFlag.BACKCOPY_ENABLED:
-                return args[i + 1]
+                return self.args[i + 1]
         return None
 
     def validate(self):
