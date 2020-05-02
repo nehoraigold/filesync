@@ -29,6 +29,7 @@ class OptionsFlag(Flag):
     @staticmethod
     def from_string(arg: str) -> "OptionsFlag":
         flag_to_patterns_map = {
+            OptionsFlag.HELP: ["^\-\-help$", "^\-h$"],
             OptionsFlag.TEST_MODE: ["^\-\-test\-mode$", "^\-t"],
             OptionsFlag.RECURSIVE_SEARCH: ["^\-\-recursive$", "^\-r$"],
             OptionsFlag.BACKCOPY_ENABLED: ["^\-\-backcopy$", "^\-b"],
@@ -70,3 +71,31 @@ FILETYPE_TO_SUFFIX = {
     FileTypeFlag.VIDEO_TYPE: [".mov", ".wav"],
     FileTypeFlag.AUDIO_TYPE: [".m4a", ".mp3", ".aif", ".wav", ".aac", ".m4p", ".wma"]
 }
+
+def print_help_screen():
+    print('''
+The FileSync backup CLI enables you to run an analysis of files in two directories including comparing them and copying them. You can use the program either with flags as a CLI or by supplying the program with a configuration file.
+
+With a configuration file:
+
+filesync <configs.json>
+
+As a CLI:
+
+filesync -c -r -f <filetype> -b <backcopy dir> <src> <dst>
+
+CLI Flags:
+    --help, -h:         Displays this help screen
+
+    --copy, -c:         Enables the copy option from the src 
+                        to dst folder
+
+    --backcopy, -b:     Enables copying folders from the dst 
+                        to a specified backcopy folder
+
+    --recursive, -r:    When analyzing and copying, searches 
+                        in src folder recursively for matching files
+
+    --filetype, -f:     Transfer only specific file types (image, 
+                        video, music), otherwise copies all filetypes
+''')

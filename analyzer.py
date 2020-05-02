@@ -64,4 +64,6 @@ class Analyzer():
         return suffix_list
 
     def has_suffix(self, entryName):
+        if self.configs.filetypes == FileTypeFlag.ALL_TYPE:
+            return True
         return any([filetype in entryName for filetype in self.suffixes])

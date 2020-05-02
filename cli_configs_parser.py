@@ -7,10 +7,10 @@ class CLIConfigsParser(IConfigsParser):
     def __init__(self, args: typing.List[str]):
         self.args = args
         self.options = self.get_options()
-        self.filetypes = self.get_filetypes()
-        self.source_path = self.args[-2]
-        self.backup_path = self.args[-1]
-        self.backcopy_path = self.get_backcopy_path()
+        self.filetypes = self.get_filetypes() if not self.is_enabled(OptionsFlag.HELP) else None
+        self.source_path = self.args[-2] if not self.is_enabled(OptionsFlag.HELP) else None
+        self.backup_path = self.args[-1] if not self.is_enabled(OptionsFlag.HELP) else None
+        self.backcopy_path = self.get_backcopy_path() if not self.is_enabled(OptionsFlag.HELP) else None
 
     def get_options(self) -> OptionsFlag:
         flags = OptionsFlag.NONE
