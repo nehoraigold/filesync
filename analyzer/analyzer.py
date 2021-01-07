@@ -18,15 +18,16 @@ class Analyzer:
         self.files_to_backcopy = 0
     
     def compare_directories(self):
-        for song in set(list(self.backup_dict.keys()) + list(self.source_dict.keys())):
-            in_backup = song in self.backup_dict.keys()
-            in_source = song in self.source_dict.keys()
+        for file in set(list(self.backup_dict.keys()) + list(self.source_dict.keys())):
+            in_backup = file in self.backup_dict.keys()
+            in_source = file in self.source_dict.keys()
             if in_backup and in_source:
                 continue
             elif in_backup and not in_source:
                 self.files_to_backcopy += 1
             elif in_source and not in_backup:
                 self.files_to_backup += 1
+
         utils.print_header("ANALYSIS SUMMARY")
         print("There are {} files in your source destination, {} of which need backup."
             .format(len(self.source_dict.keys()), self.files_to_backup))
