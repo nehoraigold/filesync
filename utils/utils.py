@@ -2,6 +2,7 @@ import typing
 import re
 from enum import Flag, auto
 
+
 def print_header(text: str) -> None:
     length = len(text)
     padding = 5
@@ -71,6 +72,7 @@ FILETYPE_TO_SUFFIX = {
     FileTypeFlag.VIDEO_TYPE: [".mov", ".wav"],
     FileTypeFlag.AUDIO_TYPE: [".m4a", ".mp3", ".aif", ".wav", ".aac", ".m4p", ".wma"]
 }
+
 
 def print_help_screen():
     print('''

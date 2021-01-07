@@ -1,5 +1,5 @@
 import abc
-import typing
+
 
 class IConfigsParser(metaclass=abc.ABCMeta):
     @classmethod

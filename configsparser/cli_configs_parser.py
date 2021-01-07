@@ -1,7 +1,8 @@
 import typing
 from os.path import isdir
-from utils import OptionsFlag, FileTypeFlag
-from iconfigsparser import IConfigsParser
+from utils.utils import OptionsFlag, FileTypeFlag
+from configsparser.iconfigsparser import IConfigsParser
+
 
 class CLIConfigsParser(IConfigsParser):
     def __init__(self, args: typing.List[str]):
@@ -17,7 +18,7 @@ class CLIConfigsParser(IConfigsParser):
         for option in self.args:
             flags |= OptionsFlag.from_string(option)
         return flags
-    
+
     def get_filetypes(self) -> FileTypeFlag:
         if not self.is_enabled(OptionsFlag.SPECIFIC_FILETYPE):
             return FileTypeFlag.ALL_TYPE
@@ -33,7 +34,7 @@ class CLIConfigsParser(IConfigsParser):
             if OptionsFlag.from_string(arg) & OptionsFlag.SPECIFIC_FILETYPE:
                 flag_found = True
         return filetypes
-        
+
     def get_backcopy_path(self):
         if not self.is_enabled(OptionsFlag.BACKCOPY_ENABLED):
             return None
@@ -44,17 +45,18 @@ class CLIConfigsParser(IConfigsParser):
 
     def validate(self):
         if isdir(self.source_path) and isdir(self.backup_path) and \
-            (True if not self.is_enabled(OptionsFlag.BACKCOPY_ENABLED) else isdir(self.backcopy_path)):
+                (True if not self.is_enabled(OptionsFlag.BACKCOPY_ENABLED) else isdir(self.backcopy_path)):
             return True
         else:
-            msg = "There was an error loading the configuration file.\n\nOne or more of the configured paths is invalid. Have you connected the external hard drive?"
+            msg = "There was an error loading the configuration file.\n\nOne or more of the configured paths is " \
+                  "invalid. Have you connected the external hard drive? "
             print("{}\n => Source: {}\n => Backup: {}{}".format(
                 msg,
-                self.source_path, 
-                self.backup_path, 
-                "\n => Backcopy: {}".format(self.backcopy_path) if self.is_enabled(OptionsFlag.BACKCOPY_ENABLED) else ""))
+                self.source_path,
+                self.backup_path,
+                "\n => Backcopy: {}".format(self.backcopy_path) if self.is_enabled(
+                    OptionsFlag.BACKCOPY_ENABLED) else ""))
             return False
-    
+
     def is_enabled(self, option: OptionsFlag) -> bool:
         return bool(option & self.options)
-        

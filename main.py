@@ -1,18 +1,26 @@
 import sys
-from utils import OptionsFlag, print_help_screen, print_header
-from configs_parser_factory import ConfigsParserFactory
-from analyzer import Analyzer
-from copier import Copier
+from utils.utils import OptionsFlag, print_help_screen, print_header
+from configsparser.configs_parser_factory import ConfigsParserFactory
+from analyzer.analyzer import Analyzer
+from copier.copier import Copier
+
 
 def main():
     print_header("FILESYNC BACKUP PROGRAM")
+
+    if len(sys.argv[1:]) < 1:
+        print("Improper usage: not enough arguments. Run 'filesync --help' for more information.")
+        return exit(1)
+
     configs = ConfigsParserFactory.create(sys.argv[1:])
     if configs.is_enabled(OptionsFlag.HELP):
         print_help_screen()
         return exit(0)
+
     if not configs.validate():
         print("\nThere was an issue validating the configurations. Terminating program.")
-        return exit(0)
+        return exit(1)
+
     analyzer = Analyzer(configs)
     dst_files = analyzer.get_backup_files()
     src_files = analyzer.get_source_files()

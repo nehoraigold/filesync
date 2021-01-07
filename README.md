@@ -5,6 +5,8 @@ Ideas for improvement:
 * Flags for all the things in the config file
 * Different file types (photos, music, video, etc.)
 * Recursive or non recursive searches in folder
+* Test mode pretends it does everything but doesn't really
+* Verbose mode and less verbose mode
 
 Flags:
 * --help, -h: Displays help screen

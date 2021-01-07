@@ -2,8 +2,14 @@ import os
 import typing
 from shutil import copyfile
 
-class Copier():
-    def __init__(self, sourcePath: str, destinationPath: str, sourceDict: typing.Dict[str, str], destinationDict: typing.Dict[str, str], number: int):
+
+class Copier:
+    def __init__(self,
+                 sourcePath: str,
+                 destinationPath: str,
+                 sourceDict: typing.Dict[str, str],
+                 destinationDict: typing.Dict[str, str],
+                 number: int):
         self.source_path = sourcePath
         self.destination_path = destinationPath
         self.source_dict = sourceDict

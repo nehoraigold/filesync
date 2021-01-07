@@ -1,16 +1,20 @@
 import json
-from iconfigsparser import IConfigsParser
-from utils import OptionsFlag, FileTypeFlag
+from configsparser.iconfigsparser import IConfigsParser
+from utils.utils import OptionsFlag, FileTypeFlag
 from os.path import isdir
+
 
 class JSONConfigsParser(IConfigsParser):
     def __init__(self, dictionary):
         self.options = self.get_options(dictionary)
         self.filetypes = self.get_filetypes(dictionary)
-        self.backup_path = "C:\\Users\\Ori\\Desktop\\dst" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get("backupPath")
-        self.source_path = "C:\\Users\\Ori\\Desktop\\src" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get("sourcePath")
-        self.backcopy_path = "C:\\Users\\Ori\\Desktop\\src" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get("backCopyPath")
-    
+        self.backup_path = "C:\\Users\\Ori\\Desktop\\dst" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get(
+            "backupPath")
+        self.source_path = "C:\\Users\\Ori\\Desktop\\src" if self.is_enabled(OptionsFlag.TEST_MODE) else dictionary.get(
+            "sourcePath")
+        self.backcopy_path = "C:\\Users\\Ori\\Desktop\\src" if self.is_enabled(
+            OptionsFlag.TEST_MODE) else dictionary.get("backCopyPath")
+
     @staticmethod
     def from_json(filepath):
         with open(filepath) as config_file:
@@ -28,7 +32,7 @@ class JSONConfigsParser(IConfigsParser):
         if dictionary.get("recursiveSearch", False):
             flags |= OptionsFlag.RECURSIVE_SEARCH
         return flags
-    
+
     def get_filetypes(self, dictionary):
         filetypes = FileTypeFlag.NONE
         filetype_list = dictionary.get("filetypes", [])
@@ -38,20 +42,22 @@ class JSONConfigsParser(IConfigsParser):
             filetypes |= FileTypeFlag.from_string(ft)
         return filetypes
 
-
     def validate(self):
         try:
             if isdir(self.backup_path) and isdir(self.source_path) and \
-                (True if not self.is_enabled(OptionsFlag.BACKCOPY_ENABLED) else isdir(self.backcopy_path)):
-                print("Configurations loaded succssfully!{}".format("\nRunning in test mode.\n" if self.is_enabled(OptionsFlag.TEST_MODE) else "\n"))
+                    (True if not self.is_enabled(OptionsFlag.BACKCOPY_ENABLED) else isdir(self.backcopy_path)):
+                print("Configurations loaded succssfully!{}".format(
+                    "\nRunning in test mode.\n" if self.is_enabled(OptionsFlag.TEST_MODE) else "\n"))
                 return True
             else:
-                msg = "There was an error loading the configuration file.\n\nOne or more of the configured paths is invalid. Have you connected the external hard drive?"
+                msg = "There was an error loading the configuration file.\n\nOne or more of the configured paths is " \
+                      "invalid. Have you connected the external hard drive? "
                 print("{}\n => Source: {}\n => Backup: {}{}".format(
                     msg,
-                    self.source_path, 
-                    self.backup_path, 
-                    "\n => Backcopy: {}".format(self.backcopy_path) if self.is_enabled(OptionsFlag.BACKCOPY_ENABLED) else ""))
+                    self.source_path,
+                    self.backup_path,
+                    "\n => Backcopy: {}".format(self.backcopy_path) if self.is_enabled(
+                        OptionsFlag.BACKCOPY_ENABLED) else ""))
                 return False
         except:
             print("There was an error validating the configurations. The program has exited.")

@@ -1,9 +1,10 @@
 import typing
 import os
-from utils import OptionsFlag, FileTypeFlag, FILETYPE_TO_SUFFIX
-import utils
+from utils.utils import OptionsFlag, FileTypeFlag, FILETYPE_TO_SUFFIX
+from utils import utils
 
-class Analyzer():
+
+class Analyzer:
     def __init__(self, configs: "IConfigsParser"):
         print("Starting analysis...")
         self.configs = configs

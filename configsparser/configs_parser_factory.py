@@ -1,7 +1,8 @@
 import typing
-from iconfigsparser import IConfigsParser
-from json_configs_parser import JSONConfigsParser
-from cli_configs_parser import CLIConfigsParser
+from configsparser.iconfigsparser import IConfigsParser
+from configsparser.json_configs_parser import JSONConfigsParser
+from configsparser.cli_configs_parser import CLIConfigsParser
+
 
 class ConfigsParserFactory:
     @staticmethod
